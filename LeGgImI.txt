@@ -1,0 +1,25 @@
+nella cartella music/templates ci sono i file html, mentre in static trovi css,js e immagini. Il js più importante è web3auth.js che ha delle funzioni che vengono usate per loggare su metamask
+e basta. web3.min.js credo di non averlo nemmeno usato. Per il resto delle cose che non ho ancora fatto, utilizzero ethers.js (tipo creare NFT, o comunque interagire con i contratti).
+autologin.html non serve a nulla se non a loggare automaticamente ma non so se verrà usato, però almeno c'è.
+Il pulsante transazione di colore rosso in login.html serve ad eseguire una transazione da metamask ad un mio wallet(occhio che se vuoi provare devi prima cambiare network ed entrare nella testnet 
+di binance, ti lascio i vari dati sotto, altrimenti rischi di usare i tuoi soldi veri) mentre il pulsante transazione bianco serve solo a firmare un messaggio
+Poi music/web3auth sarebbe un applicazione che viene usata da django per implementare web3 ma non ne sono sicuro per niente
+
+testnet:
+NETWORK_NAME: quello che ti pare
+RPC_URL: https://data-seed-prebsc-1-s1.binance.org:8545/
+CHAIN_ID: 97
+SYMBOL: BNB
+
+se vuoi ricaricare dei crediti di prova, basta che vai su 
+https://testnet.binance.org/faucet-smart
+e incolli il tuo indirizzo metamask
+
+
+quello che ci sarebbe da fare: 
+
+-stileggiare la pagina web
+-creare il contratto per la creazione di nft + capire come gettare i dati della nft su ipfs (la nft la crei con i metadati e non con i dati, altrimenti se uno vuole pubblicare un file troppo pesante sarebbe una shit)
+-fare un form di upload dati, che poi verranno pubblicati su ipfs
+-capire come cacchio si fa a fare un asta 
+-boh un sacco di altra robaccia

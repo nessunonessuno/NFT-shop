@@ -1,0 +1,15 @@
+{% extends 'web3auth/base.html' %}
+{% block content %}
+  <div class="row m-t-2">
+    <button type="button" onclick="startLogin()">Login</button>
+    <button type="button" onclick="signMessage()">transazione</button>
+    <button type="button" onclick="transaction()" style="background-color:#ff0000;">transazione</button>
+  </div>
+{% endblock content %}
+{% block javascript %}
+  {{ block.super }}
+
+
+{% endblock javascript %}
+
+
