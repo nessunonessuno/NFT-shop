@@ -6,14 +6,14 @@ from django.urls.exceptions import NoReverseMatch
 from django.contrib.auth import login, authenticate
 from django.conf import settings
 from django.views.decorators.http import require_http_methods
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 from web3auth.forms import LoginForm, SignupForm
 from web3auth.utils import recover_to_addr
 from django.utils.translation import ugettext_lazy as _
 from web3auth.settings import app_settings
 from django.http import HttpResponse
 from .forms import UploadFileForm
-
+from .handle_data import mint_with_metadata, upload_file_ipfs
 import json
 
 
@@ -116,8 +116,11 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            print("animanera ")
-            return HttpResponseRedirect('/index')
+            mint_with_metadata(request.POST, upload_file_ipfs(request.FILES['file']))
+            return redirect('/uploads/')
+        else:
+            print(form.errors)
+            return redirect("/")
     else:
         form = UploadFileForm()
     return render(request, 'web3auth/upload.html', {'form': form})

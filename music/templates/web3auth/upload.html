@@ -1,12 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'web3auth/base.html' %}
+{% block content %}
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <h1> ano </h1>
-    {{form}}
-</head>
+    </head>
 <body>
+    <h1> Upload NFT </h1>
+   <form class="form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+           <input type="submit" value=Submit">
+      </form>
+
+    {% if user.is_authenticated %}
+    <h1> sono autenticate</h1>
+    {% else %}
+    <h2>non sono autenticato</h2>
+    {{ user.is_authenticated }}
+    {% endif %}
+
 
 </body>
-</html>
+{% endblock content %}
