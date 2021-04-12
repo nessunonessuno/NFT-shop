@@ -108,6 +108,5 @@ def signup_view(request, template_name='web3auth/signup.html'):
 
 
 def index(request):
-    return HttpResponse("Hello!")
-
+    return render(request, 'web3auth/index.html')
 

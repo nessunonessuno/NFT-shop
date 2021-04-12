@@ -15,6 +15,7 @@ from django.http import HttpResponse
 from .forms import UploadFileForm
 from .handle_data import mint_with_metadata, upload_file_ipfs
 import json
+from Database.models import Post
 
 
 def get_redirect_url(request):
@@ -116,11 +117,23 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            mint_with_metadata(request.POST, upload_file_ipfs(request.FILES['file']))
+            nm = form.cleaned_data['name']
+            dsc = form.cleaned_data['description']
+            ft = form.cleaned_data['filetype']
+            qty = form.cleaned_data['quantity']
+            prc = form.cleaned_data['price']
+            ipfs_location = f'http://127.0.0.1:8080/ipfs/{upload_file_ipfs(request.FILES["file"])}'
+            mint_with_metadata(request.POST, ipfs_location)
+            save = Post(name=nm, description=dsc, filetype=ft, quantity=qty, price=prc, file_location=ipfs_location, sold=0)
+            save.save()
+
             return redirect('/uploads/')
         else:
-            print(form.errors)
             return redirect("/")
     else:
         form = UploadFileForm()
     return render(request, 'web3auth/upload.html', {'form': form})
+
+def shop(request):
+    post = Post.objects.all()
+    return render(request, 'web3auth/shop.html', {'post':post})

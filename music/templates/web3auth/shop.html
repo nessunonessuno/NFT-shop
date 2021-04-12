@@ -1,0 +1,23 @@
+{% extends 'web3auth/base.html' %}
+{% block content %}
+  <div class="row m-t-2">
+    <h1>Shop</h1>
+    {% if post %}
+         {% for p in post%}
+    <div class="container p-3 my-3 bg-primary text-white">
+      {% if p.filetype == ".jpg" or p.filetype == ".png" %}
+
+      <p> Image not welcome</p>
+      {% else %}
+      <a href="{% url 'single' name=p.name pk=p.pk %}">{{p.name}}   |   {{p.filetype}}</a>
+
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <br>
+    <h1>No NFT created!</h1>
+    {% endif %}
+
+  </div>
+{% endblock content %}

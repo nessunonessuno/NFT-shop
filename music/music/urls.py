@@ -21,10 +21,14 @@ from web3auth import views
 from . import views as vs
 from django.conf import settings
 from django.conf.urls.static import static
+from Posts import urls as post_url
+from Posts import views as post_view
+
+
 
 def login(request):
     if not request.user.is_authenticated:
-        return render(request, 'web3auth/login.html')
+        return render(request, 'web3auth/index.html')
     else:
         return redirect('/admin/login')
 
@@ -38,7 +42,8 @@ def auto_login(request):
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', RedirectView.as_view(url='/login')),
+    url(r'^$', RedirectView.as_view(url='/index')),
+    url(r'^index/', views.index, name='index'),
     url(r'^login/', login, name='login'),
     url(r'^index/', views.index, name='index'),
     url(r'^uploads/', vs.upload_file, name='uploads'),
@@ -46,5 +51,7 @@ urlpatterns = [
     url(r'^login_api/$', views.login_api, name='web3auth_login_api'),
     url(r'^signup_api/$', views.signup_api, name='web3auth_signup_api'),
     url(r'^signup/$', views.signup_view, name='web3auth_signup'),
+    url(r'^shop/', vs.shop, name='shop'),
+    url(r'^shop/(?P<name>[-\w]+)/(?P<pk>\d+)/$', post_view.PostDetail.as_view(), name='single'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,3 +1,7 @@
+var addrs = null
+var provider;
+
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -62,10 +66,7 @@ function loginWithSignature(address, signature, login_url, onLoginRequestError, 
 
 function checkWeb3(callback) {
     if (window.ethereum) {
-        let provider;
-        window.ethereum.enable().then(provider = new ethers.providers.Web3Provider(window.ethereum));
-        const signer = provider.getSigner();
-
+        ethereum.send('eth_requestAccounts').then(provider = new ethers.providers.Web3Provider(window.ethereum));
     };
 }
 
@@ -131,7 +132,7 @@ function web3Login(login_url, onTokenRequestFail, onTokenSignFail, onTokenSignSu
 
 function startLogin() {
       if (typeof web3 !== 'undefined') {
-        checkWeb3(function (loggedIn) {check
+         checkWeb3(function (loggedIn) {check
           if (!loggedIn) {
             alert("Please unlock your web3 provider (probably, Metamask)")
           } else {
@@ -139,9 +140,10 @@ function startLogin() {
             web3Login(login_url, console.log, console.log, console.log, console.log, console.log, function (resp) {
               window.location.replace(resp.redirect_url);
             });
-
+            }
           }
-        });
+        )
+
 
       } else {
         alert('web3 missing');
@@ -149,12 +151,6 @@ function startLogin() {
       }
     };
 
-function signMessage() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner()
-    signer.signMessage("ano");
-
-    };
 
 function ready(fn) {
     if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
@@ -172,4 +168,21 @@ function transaction() {
     to: '0xaa9AC6533010ac53F891a1a9Ff2779Ac08D15e4A',
     value: ethers.utils.parseEther("0.1")});
     };
+
+function addresser(){
+    if (addrs != null) {
+        document.getElementById("mybutton").childNodes[0].nodeValue=addrs;
+      } else {
+
+      addrs =  ethereum['selectedAddress'];
+
+      if (addrs != null) {
+          document.getElementById("mybutton").childNodes[0].nodeValue=addrs;
+      } else {
+          document.getElementById("mybutton").childNodes[0].nodeValue="ciao";
+
+      }
+      };
+    };
+
 

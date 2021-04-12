@@ -6,19 +6,16 @@
     <title>Title</title>
     </head>
 <body>
+       <div class="container item3 bg-dark">
+
     <h1> Upload NFT </h1>
    <form class="form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
            <input type="submit" value=Submit">
       </form>
+           </div>
 
-    {% if user.is_authenticated %}
-    <h1> sono autenticate</h1>
-    {% else %}
-    <h2>non sono autenticato</h2>
-    {{ user.is_authenticated }}
-    {% endif %}
 
 
 </body>

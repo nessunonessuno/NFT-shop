@@ -3,10 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>{% block title %}Django-Web3Auth{% endblock title %}</title>
+  <title>{% block title %}unda{% endblock title %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <meta name="author" content="">
 
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
@@ -17,6 +15,7 @@
     <!-- Latest compiled and minified Bootstrap 4 beta CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/stile.css' %}">
 
     <!-- Your stuff: Third-party css libraries go here -->
 
@@ -26,28 +25,35 @@
 <body>
 
 <div class="m-b-1">
-  <nav class="navbar navbar-expand-md navbar-light bg-light">
+  <nav class="navbar navbar-expand-md navbar-light bg-dark">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">Django web3 auth</a>
+    <a class="navbar-brand item text-white" href="{% url 'index' %}">alienorum</a>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'login' %}">Login</a>
+      <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex ">
+              <li class="nav-item text-dark">
+          <a class="nav-link text-white" href="">Account</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'autologin' %}">Autologin</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'web3auth_signup' %}">Signup</a>
+
+                <li class="nav-item item2">
+        <button id="mybutton" type="button" onclick="startLogin()">Connect</button>
         </li>
       </ul>
     </div>
   </nav>
+  <div class="donjo container" style="text-align: center;">
+      <div class="ass container" style="margin:0 auto;">
+        <a class="text-dark" href="{% url 'shop' %}" style="margin:0 auto;">Shop</a>
+        <a class="text-dark" href="{% url 'index' %}" style="margin:0 auto;">Home</a>
+        <a class="text-dark" href="{% url 'uploads' %}" style="margin:0 auto;">Upload</a>
+
+
+  </div>
+  </div>
 
 </div>
 <div class="container">
