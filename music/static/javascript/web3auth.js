@@ -67,6 +67,9 @@ function loginWithSignature(address, signature, login_url, onLoginRequestError, 
 function checkWeb3(callback) {
     if (window.ethereum) {
         ethereum.send('eth_requestAccounts').then(provider = new ethers.providers.Web3Provider(window.ethereum));
+        if (ethereum['selectedAddress'] != null){
+            document.getElementById("mybutton").childNodes[0].nodeValue=ethereum['selectedAddress'];
+}
     };
 }
 
@@ -118,6 +121,7 @@ function web3Login(login_url, onTokenRequestFail, onTokenSignFail, onTokenSignSu
                 onTokenRequestFail(request);
             }
         }
+
     };
 
     request.onerror = function () {
@@ -140,7 +144,7 @@ function startLogin() {
             web3Login(login_url, console.log, console.log, console.log, console.log, console.log, function (resp) {
               window.location.replace(resp.redirect_url);
             });
-            }
+}
           }
         )
 
@@ -174,15 +178,15 @@ function addresser(){
         document.getElementById("mybutton").childNodes[0].nodeValue=addrs;
       } else {
 
+       ethereum.send('eth_requestAccounts').then(provider = new ethers.providers.Web3Provider(window.ethereum));
+
       addrs =  ethereum['selectedAddress'];
 
       if (addrs != null) {
-          document.getElementById("mybutton").childNodes[0].nodeValue=addrs;
+          document.getElementById("mybutton").childNodes[0].nodeValue=ethereum['selectedAddress'];
       } else {
           document.getElementById("mybutton").childNodes[0].nodeValue="ciao";
 
       }
       };
     };
-
-

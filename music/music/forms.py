@@ -1,5 +1,5 @@
 from django import forms
-type = [('.mp3', '.mp3'),('.mp4', '.mp4'),('.wav', '.wav'),('.vst', '.vst'),('.jpg', '.jpg'),('.png', '.png')]
+type = [('.mp3', '.mp3'),('.mp4', '.mp4'),('.wav', '.wav'),('.vst', '.vst'),('.jpg', '.jpg'),('.png', '.png'), ('.aiff','.aiff'), ('.au', '.au') ]
 
 class UploadFileForm(forms.Form):
     name = forms.CharField(max_length=50)

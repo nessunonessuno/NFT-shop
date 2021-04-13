@@ -1,23 +1,39 @@
 {% extends 'web3auth/base.html' %}
 {% block content %}
-  <div class="row m-t-2">
+{% load static %}
+  <link rel="stylesheet" href="{% static 'css/stile.css' %}">
+
     <h1>Shop</h1>
+
+ <!-- Control buttons -->
+<div id="myBtnContainer">
+  <button class="btn active" onclick="filterSelection('all')">All</button>
+  <button class="btn" onclick="filterSelection('audio')">Audio</button>
+  <button class="btn" onclick="filterSelection('video')">Video</button>
+  <button class="btn" onclick="filterSelection('plugin')">Plugin</button>
+  <button class="btn" onclick="filterSelection('other')">Other</button>
+</div>
     {% if post %}
          {% for p in post%}
-    <div class="container p-3 my-3 bg-primary text-white">
-      {% if p.filetype == ".jpg" or p.filetype == ".png" %}
+<div class="container">
+    <div class="row">
 
-      <p> Image not welcome</p>
-      {% else %}
-      <a href="{% url 'single' name=p.name pk=p.pk %}">{{p.name}}   |   {{p.filetype}}</a>
-
-      {% endif %}
-    </div>
-    {% endfor %}
+            {% if p.filetype == ".mp4" %}
+      <div class="filterDiv video show"><a class="text-white" href="{% url 'single' name=p.name pk=p.pk %}">{{p.name}}   |   {{p.filetype}}</a></div>
+                {% elif p.filetype == ".mp3" or p.filetype == ".wav" or p.filetype == ".aiff" %}
+      <div class="filterDiv audio show"><a class="text-white" href="{% url 'single' name=p.name pk=p.pk %}">{{p.name}}   |   {{p.filetype}}</a></div>
+                    {% elif p.filetype == ".vst" or p.filetype == ".au"  %}
+      <div class="filterDiv audio show"><a class="text-white" href="{% url 'single' name=p.name pk=p.pk %}">{{p.name}}   |   {{p.filetype}}</a></div>
     {% else %}
-    <br>
+          <div class="filterDiv other show"><a class="text-white" href="{% url 'single' name=p.name pk=p.pk %}">{{p.name}}   |   {{p.filetype}}</a></div>
+
+            {% endif %}
+
+        {% endfor %}
+        {% else %}
     <h1>No NFT created!</h1>
     {% endif %}
+    </div>
+</div>
 
-  </div>
 {% endblock content %}

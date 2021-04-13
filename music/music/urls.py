@@ -23,7 +23,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from Posts import urls as post_url
 from Posts import views as post_view
-
+from django.views.generic import TemplateView
 
 
 def login(request):
@@ -52,6 +52,7 @@ urlpatterns = [
     url(r'^signup_api/$', views.signup_api, name='web3auth_signup_api'),
     url(r'^signup/$', views.signup_view, name='web3auth_signup'),
     url(r'^shop/', vs.shop, name='shop'),
-    url(r'^shop/(?P<name>[-\w]+)/(?P<pk>\d+)/$', post_view.PostDetail.as_view(), name='single'),
+    url(r'^shop/(?P<name>[-\w]+)/(?P<pk>\d+)/$', post_view.PostDetail.as_view( ), name='single'),
+    url(r'^frontend/', TemplateView.as_view(template_name="build/index.html")),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
