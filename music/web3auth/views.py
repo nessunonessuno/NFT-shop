@@ -44,16 +44,17 @@ def login_api(request):
         else:
             form = LoginForm(token, request.POST)
             if form.is_valid():
-                signature, address = form.cleaned_data.get("signature"), form.cleaned_data.get("address")
+                address = form.cleaned_data.get("signature"), form.cleaned_data.get("address")
                 del request.session['login_token']
-                user = authenticate(request, token=token, address=address, signature=signature)
+                user = authenticate(request, token=token, address=address)
                 if user:
                     login(request, user, 'web3auth.backend.Web3Backend')
 
-                    return JsonResponse({'success': True, 'redirect_url': get_redirect_url(request)})
+                    return render(request,
+                                  "web3auth/index.html",
+                                  {'form': form})
                 else:
-                    error = _("Can't find a user for the provided signature with address {address}").format(
-                        address=address)
+                    error = _("Can't find a user for the provided signature with address {}")
                     return JsonResponse({'success': False, 'error': error})
             else:
                 return JsonResponse({'success': False, 'error': json.loads(form.errors.as_json())})
@@ -105,6 +106,8 @@ def signup_view(request, template_name='web3auth/signup.html'):
     return render(request,
                   template_name,
                   {'form': form})
+
+
 
 
 def index(request):

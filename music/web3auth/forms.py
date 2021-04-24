@@ -9,8 +9,7 @@ from .utils import validate_eth_address
 
 
 class LoginForm(forms.Form):
-    signature = forms.CharField(widget=forms.HiddenInput, max_length=132)
-    address = forms.CharField(widget=forms.HiddenInput, max_length=42, validators=[validate_eth_address])
+    address = forms.CharField(max_length=42, validators=[validate_eth_address])
 
     def __init__(self, token, *args, **kwargs):
         self.token = token

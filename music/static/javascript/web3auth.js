@@ -1,5 +1,7 @@
 var addrs = null
 var provider;
+var request = new XMLHttpRequest();
+
 
 
 function getCookie(name) {
@@ -61,15 +63,12 @@ function loginWithSignature(address, signature, login_url, onLoginRequestError, 
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
     var formData = 'address=' + address + '&signature=' + signature;
-    request.send(formData);
+    request.request(formData);
 }
 
 function checkWeb3(callback) {
     if (window.ethereum) {
         ethereum.send('eth_requestAccounts').then(provider = new ethers.providers.Web3Provider(window.ethereum));
-        if (ethereum['selectedAddress'] != null){
-            document.getElementById("mybutton").childNodes[0].nodeValue=ethereum['selectedAddress'];
-}
     };
 }
 
@@ -96,8 +95,11 @@ function web3Login(login_url, onTokenRequestFail, onTokenSignFail, onTokenSignSu
             var resp = JSON.parse(request.responseText);
             var token = resp.data;
             var msg = web3.toHex(token);
-            var from = web3.eth.accounts[0];
-            web3.personal.sign(msg, from, (err, result) => {
+            var from = ethereum.request({ method: 'eth_accounts' });
+            const signer = provider.getSigner()
+
+
+            singer.signMessage(msg, from, (err, result) => {
                 if (err) {
                     if (typeof onTokenSignFail == 'function') {
                         onTokenSignFail(err);
@@ -110,7 +112,7 @@ function web3Login(login_url, onTokenRequestFail, onTokenSignFail, onTokenSignSu
                     if (typeof onTokenSignSuccess == 'function') {
                         onTokenSignSuccess(result);
                     }
-                    loginWithSignature(from, result, login_url, onLoginRequestError, onLoginFail, onLoginSuccess);
+
                 }
             });
 
@@ -140,13 +142,14 @@ function startLogin() {
           if (!loggedIn) {
             alert("Please unlock your web3 provider (probably, Metamask)")
           } else {
-            var login_url = '{% url "web3auth_login_api" %}';
+            var login_url = '/login_api/';
             web3Login(login_url, console.log, console.log, console.log, console.log, console.log, function (resp) {
-              window.location.replace(resp.redirect_url);
+              window.location.replace(resp.redirect_url).then(loginWith());
             });
 }
           }
-        )
+        );
+
 
 
       } else {
@@ -174,19 +177,32 @@ function transaction() {
     };
 
 function addresser(){
-    if (addrs != null) {
-        document.getElementById("mybutton").childNodes[0].nodeValue=addrs;
-      } else {
+      addrs =  ethereum.request({ method: 'eth_accounts' });
 
-       ethereum.send('eth_requestAccounts').then(provider = new ethers.providers.Web3Provider(window.ethereum));
+       addrs.then(function(result) {
+       document.getElementById("mybutton").childNodes[0].nodeValue=result;
 
-      addrs =  ethereum['selectedAddress'];
 
-      if (addrs != null) {
-          document.getElementById("mybutton").childNodes[0].nodeValue=ethereum['selectedAddress'];
-      } else {
-          document.getElementById("mybutton").childNodes[0].nodeValue="ciao";
-
-      }
+    });
       };
-    };
+
+window.onload = addresser();
+
+function loginWith() {
+    var login_url = "/login_api/"
+    var request1 = new XMLHttpRequest();
+    request1.open('GET', login_url, false);
+    request1.send();
+    request.open('POST', login_url, false);
+    const signer = provider.getSigner();
+    const address = signer.getAddress();
+    address.then(function(result) {
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    var formData = 'address=' + result
+    request.send(formData);
+    addresser();
+
+
+    });
+}

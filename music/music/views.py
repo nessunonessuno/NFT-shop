@@ -46,12 +46,11 @@ def login_api(request):
         else:
             form = LoginForm(token, request.POST)
             if form.is_valid():
-                signature, address = form.cleaned_data.get("signature"), form.cleaned_data.get("address")
+                address = form.cleaned_data.get("address")
                 del request.session['login_token']
-                user = authenticate(request, token=token, address=address, signature=signature)
+                user = authenticate(request, token=token, address=address)
                 if user:
                     login(request, user, 'web3auth.backend.Web3Backend')
-
                     return JsonResponse({'success': True, 'redirect_url': get_redirect_url(request)})
                 else:
                     error = _("Can't find a user for the provided signature with address {address}").format(
@@ -104,13 +103,12 @@ def signup_view(request, template_name='web3auth/signup.html'):
                 user.save()
                 login(request, user, 'web3auth.backend.Web3Backend')
                 return redirect(get_redirect_url(request))
+
     return render(request,
                   template_name,
                   {'form': form})
 
 
-def index(request):
-    return HttpResponse("Hello!")
 
 
 def upload_file(request):
@@ -124,7 +122,7 @@ def upload_file(request):
             prc = form.cleaned_data['price']
             ipfs_location = f'http://127.0.0.1:8080/ipfs/{upload_file_ipfs(request.FILES["file"])}'
             mint_with_metadata(request.POST, ipfs_location)
-            save = Post(name=nm, description=dsc, filetype=ft, quantity=qty, price=prc, file_location=ipfs_location, sold=0)
+            save = Post(name=nm, description=dsc, filetype=ft, quantity=qty, price=prc, file_location=ipfs_location, sold=False)
             save.save()
 
             return redirect('/uploads/')
@@ -137,3 +135,19 @@ def upload_file(request):
 def shop(request):
     post = Post.objects.all()
     return render(request, 'web3auth/shop.html', {'post':post})
+
+def index1(request):
+    token = request.session.get('login_token')
+    form = LoginForm(token, request.POST)
+    if form.is_valid():
+
+        address = form.cleaned_data.get("address")
+        print(address)
+        del request.session['login_token']
+        user = authenticate(request, token=token, address=address)
+        if user:
+            login(request, user, 'web3auth.backend.Web3Backend')
+    return render(request,
+                  "web3auth/index.html",
+                  {'form': form})
+

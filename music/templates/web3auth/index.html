@@ -2,6 +2,27 @@
 {% block content %}
   <div class="row m-t-2">
     <h1>Index</h1>
+    {% if user.is_authenticated %}
+    <br>
+    <h3>{{ user.username}}
+    </h3>
+          <a href="{% url 'logout' %}">
+        logout
+    </a>
+  {% endif %}
+        <form action="" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+                    <button id="aaa" type="button" onclick="loginWith()">aaa</button>
+
+      <button type="submit">Sign Up</button>
+    </form>
+
+  <div class="row m-t-2">
+    <button type="button" onclick='loginWith()'>token</button>
+  </div>
 
   </div>
+
 {% endblock content %}
+

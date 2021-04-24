@@ -24,13 +24,15 @@ from django.conf.urls.static import static
 from Posts import urls as post_url
 from Posts import views as post_view
 from django.views.generic import TemplateView
+from django.conf import settings
+from django.contrib.auth.views import LogoutView
 
 
 def login(request):
     if not request.user.is_authenticated:
-        return render(request, 'web3auth/index.html')
+        return render(request, 'web3auth/login.html')
     else:
-        return redirect('/admin/login')
+        return redirect('index/')
 
 
 def auto_login(request):
@@ -45,7 +47,7 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(url='/index')),
     url(r'^index/', views.index, name='index'),
     url(r'^login/', login, name='login'),
-    url(r'^index/', views.index, name='index'),
+    url(r'^index1/', vs.index1, name='index'),
     url(r'^uploads/', vs.upload_file, name='uploads'),
     url(r'^auto_login/', auto_login, name='autologin'),
     url(r'^login_api/$', views.login_api, name='web3auth_login_api'),
@@ -53,6 +55,8 @@ urlpatterns = [
     url(r'^signup/$', views.signup_view, name='web3auth_signup'),
     url(r'^shop/', vs.shop, name='shop'),
     url(r'^shop/(?P<name>[-\w]+)/(?P<pk>\d+)/$', post_view.PostDetail.as_view( ), name='single'),
-    url(r'^frontend/', TemplateView.as_view(template_name="build/index.html")),
+    url(r'^frontend/', TemplateView.as_view(template_name="build/index.html")), ### react ?
+    url(r'^logout/$', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
+
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

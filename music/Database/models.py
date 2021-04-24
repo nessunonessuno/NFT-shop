@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.views import generic
 
 # Create your models here.
@@ -10,7 +11,7 @@ class Post(models.Model):
     quantity = models.IntegerField()
     price = models.IntegerField()
     file_location = models.CharField(max_length=1000000)
-    sold = models.IntegerField()
+    sold = models.BooleanField()
     created_at = models.DateTimeField(auto_now=True)
 
     #owner = models.IntegerField()

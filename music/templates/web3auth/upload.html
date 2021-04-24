@@ -1,4 +1,6 @@
 {% extends 'web3auth/base.html' %}
+{% load static %}
+
 {% block content %}
 
 <head>
@@ -19,4 +21,10 @@
 
 
 </body>
+
+{% block javascript %}
+<script src='{% static "javascript/web3auth.js" %}'></script>
+<script>window.onload = startLogin();</script>
+
+{% endblock javascript %}
 {% endblock content %}
