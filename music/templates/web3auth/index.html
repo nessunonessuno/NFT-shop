@@ -10,13 +10,9 @@
         logout
     </a>
   {% endif %}
-        <form action="" method="POST">
-      {% csrf_token %}
-      {{ form.as_p }}
-                    <button id="aaa" type="button" onclick="loginWith()">aaa</button>
-
-      <button type="submit">Sign Up</button>
-    </form>
+    <div class="container">
+                          <button id="aaa" type="button" onclick="loginWith()">aaa</button>
+</div>
 
   <div class="row m-t-2">
     <button type="button" onclick='loginWith()'>token</button>

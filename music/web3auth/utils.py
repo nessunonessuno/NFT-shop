@@ -3,6 +3,7 @@ import sha3
 from eth_utils import is_hex_address
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+import ethereum
 
 
 def sig_to_vrs(sig):

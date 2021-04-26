@@ -10,7 +10,7 @@ def upload_file_ipfs(file):
         destination.close()
     DEVNULL = open(os.devnull, "wb")
     upload = f'/home/poliziacantonale/{file.name}'
-    response = subprocess.check_output('ipfs add ' + upload, shell=True, stderr=DEVNULL, stdin=DEVNULL)
+    response = subprocess.check_output(f'ipfs add {upload}', shell=True, stderr=DEVNULL, stdin=DEVNULL)
     os.system(f"rm {upload}")
     return response.split()[1].decode()
 

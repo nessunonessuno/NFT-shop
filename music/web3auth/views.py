@@ -44,9 +44,9 @@ def login_api(request):
         else:
             form = LoginForm(token, request.POST)
             if form.is_valid():
-                address = form.cleaned_data.get("signature"), form.cleaned_data.get("address")
+                signature, address = form.cleaned_data.get("signature"), form.cleaned_data.get("address")
                 del request.session['login_token']
-                user = authenticate(request, token=token, address=address)
+                user = authenticate(request, token=token, address=address, signature=signature)
                 if user:
                     login(request, user, 'web3auth.backend.Web3Backend')
 
@@ -74,6 +74,9 @@ def signup_api(request):
         return JsonResponse({'success': True, 'redirect_url': get_redirect_url(request)})
     else:
         return JsonResponse({'success': False, 'error': json.loads(form.errors.as_json())})
+
+
+
 
 
 @require_http_methods(["GET", "POST"])

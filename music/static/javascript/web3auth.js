@@ -99,7 +99,7 @@ function web3Login(login_url, onTokenRequestFail, onTokenSignFail, onTokenSignSu
             const signer = provider.getSigner()
 
 
-            singer.signMessage(msg, from, (err, result) => {
+            singer.signMessage(msg, (err, result) => {
                 if (err) {
                     if (typeof onTokenSignFail == 'function') {
                         onTokenSignFail(err);
@@ -144,11 +144,11 @@ function startLogin() {
           } else {
             var login_url = '/login_api/';
             web3Login(login_url, console.log, console.log, console.log, console.log, console.log, function (resp) {
-              window.location.replace(resp.redirect_url).then(loginWith());
+              window.location.replace(resp.redirect_url);
             });
 }
           }
-        );
+        ).then();
 
 
 
@@ -186,23 +186,37 @@ function addresser(){
     });
       };
 
-window.onload = addresser();
+window.onload = function() {
+addresser();
+provider = new ethers.providers.Web3Provider(window.ethereum);
+}
 
+// qui è dove viene firmato il messaggio e poi passato all'api per la verifica e l'eventuale accesso all account
 function loginWith() {
     var login_url = "/login_api/"
     var request1 = new XMLHttpRequest();
+    var request = new XMLHttpRequest();
+
     request1.open('GET', login_url, false);
     request1.send();
+    resp = JSON.parse(request1.responseText);
+    token = resp.data;
+    console.log(token);
     request.open('POST', login_url, false);
     const signer = provider.getSigner();
     const address = signer.getAddress();
+    signature = signer.signMessage(token)
+    signature.then(function(firma){
     address.then(function(result) {
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-    var formData = 'address=' + result
+    var formData = 'address=' + result + '&signature=' + firma;
     request.send(formData);
     addresser();
 
 
     });
+
+    })
+
 }
